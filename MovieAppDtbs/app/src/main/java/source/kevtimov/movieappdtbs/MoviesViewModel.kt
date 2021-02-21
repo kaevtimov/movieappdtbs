@@ -8,6 +8,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Response
+import javax.security.auth.callback.Callback
 
 class MoviesViewModel : ViewModel() {
 
@@ -22,14 +25,41 @@ class MoviesViewModel : ViewModel() {
 
 
     fun getMovies() {
-        scope.launch {
-            try {
-                val movies = MovieApi.retrofitService.getMovies().await()
-                _movies.postValue(movies)
-            } catch (t : Throwable) {
-                Log.e("MOVIES CALL", t.message)
+//        scope.launch {
+//            try {
+//                val movies = MovieApi.retrofitService.getMovies().await()
+//                _movies.postValue(movies)
+//            } catch (t : Throwable) {
+//                //Log.e("MOVIES CALL", t.message)
+//            }
+//        }
+    }
+
+    fun getRequestToken() {
+//        scope.launch {
+//            try {
+//                val token = MovieApi.retrofitService.getRequestToken(REQUEST_TOKEN).await()
+//                val o = token
+//            } catch (t : Throwable) {
+//                //Log.e("MOVIES CALL", t.message)
+//                val p = 9
+//            }
+//        }
+        MovieApi.retrofitService.getRequestToken(auth = REQUEST_TOKEN).enqueue(object :
+            retrofit2.Callback<RequestTokenResponse> {
+            override fun onFailure(call: Call<RequestTokenResponse>, t: Throwable) {
+                val o = 0
             }
-        }
+
+            override fun onResponse(
+                call: Call<RequestTokenResponse>,
+                response: Response<RequestTokenResponse>
+            ) {
+                val o = response.body()
+                val p = o
+            }
+
+        })
     }
 
     override fun onCleared() {

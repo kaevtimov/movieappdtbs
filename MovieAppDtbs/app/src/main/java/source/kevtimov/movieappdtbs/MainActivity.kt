@@ -16,7 +16,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        viewModel.getMovies()
+//        viewModel.getMovies()
+
+        viewModel.getRequestToken()
 
         viewModel.movies.observe(this, Observer {
             Toast.makeText(this, it.size.toString(), Toast.LENGTH_LONG).show()
